@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {
   LoginButton,
@@ -7,6 +7,11 @@ import {
   GraphRequestManager,
   LoginManager,
 } from 'react-native-fbsdk';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import {Button} from 'react-native-paper';
 
 const fbLogin_Click = () => {
@@ -34,7 +39,30 @@ const fbLogin_Click = () => {
   );
 };
 
+const googleLogin_Click = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    console.log(userInfo);
+  } catch (error) {
+    console.log('error: ', error);
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (e.g. sign in) is in progress already
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+    } else {
+      // some other error happened
+    }
+  }
+};
+
 const App = () => {
+  useEffect(() => {
+    GoogleSignin.configure();
+  }, []);
+
   return (
     <SafeAreaView>
       <Text style={styles.title}>Social Login</Text>
@@ -48,7 +76,7 @@ const App = () => {
       <Button
         icon="google"
         mode="outlined"
-        onPress={fbLogin_Click}
+        onPress={googleLogin_Click}
         style={styles.button}>
         Google Login
       </Button>

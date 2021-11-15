@@ -1,8 +1,5 @@
 apply plugin: "com.android.application"
 
-// Icons
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-
 import com.android.build.OutputFile
 
 /**
@@ -228,3 +225,8 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+// Icons
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+// Google
+apply plugin: 'com.google.gms.google-services' // <--- this should be the last line
