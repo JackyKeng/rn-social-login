@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {
-  LoginButton,
   AccessToken,
   GraphRequest,
   GraphRequestManager,
@@ -9,10 +8,10 @@ import {
 } from 'react-native-fbsdk';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {Button} from 'react-native-paper';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 const fbLogin_Click = () => {
   LoginManager.logInWithPermissions(['public_profile']).then(
@@ -58,6 +57,26 @@ const googleLogin_Click = async () => {
   }
 };
 
+const appleLogin_Click = async () => {
+  // performs login request
+  const appleAuthRequestResponse = await appleAuth.performRequest({
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  });
+
+  // get current authentication state for user
+  // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+  const credentialState = await appleAuth.getCredentialStateForUser(
+    appleAuthRequestResponse.user,
+  );
+
+  // use credentialState response to ensure the user is authenticated
+  if (credentialState === appleAuth.State.AUTHORIZED) {
+    // user is authenticated
+    console.log(appleAuthRequestResponse);
+  }
+};
+
 const App = () => {
   useEffect(() => {
     GoogleSignin.configure();
@@ -80,6 +99,15 @@ const App = () => {
         style={styles.button}>
         Google Login
       </Button>
+      {appleAuth.isSupported && (
+        <Button
+          icon="apple"
+          mode="outlined"
+          onPress={appleLogin_Click}
+          style={styles.button}>
+          Apple Login
+        </Button>
+      )}
     </SafeAreaView>
   );
 };
