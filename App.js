@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {
   LoginButton,
   AccessToken,
@@ -37,9 +37,20 @@ const fbLogin_Click = () => {
 const App = () => {
   return (
     <SafeAreaView>
-      <Text>Hello World</Text>
-      <Button icon="facebook" mode="outlined" onPress={fbLogin_Click}>
-        Login
+      <Text style={styles.title}>Social Login</Text>
+      <Button
+        icon="facebook"
+        mode="outlined"
+        onPress={fbLogin_Click}
+        style={styles.button}>
+        Facebook Login
+      </Button>
+      <Button
+        icon="google"
+        mode="outlined"
+        onPress={fbLogin_Click}
+        style={styles.button}>
+        Google Login
       </Button>
     </SafeAreaView>
   );
@@ -54,3 +65,16 @@ const responseInfoCallback = (error, result) => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 28,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  button: {
+    marginLeft: 50,
+    marginRight: 50,
+    marginBottom: 15,
+  },
+});
