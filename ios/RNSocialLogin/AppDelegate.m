@@ -12,7 +12,10 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+// Facebok Login
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+// Google Login
+#import <RNGoogleSignin/RNGoogleSignin.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -60,9 +63,8 @@ static void InitializeFlipper(UIApplication *application) {
             openURL:(NSURL *)url
             options:(nonnull NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                 openURL:url
-                                                 options:options];
+  [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] || 
+  [RNGoogleSignin application:application openURL:url options:options];
   return YES;
 }
 

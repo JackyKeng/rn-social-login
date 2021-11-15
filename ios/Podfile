@@ -6,7 +6,11 @@ platform :ios, '11.0'
 target 'RNSocialLogin' do
   config = use_native_modules!
 
+  # Facebook Login
   pod 'FBSDKLoginKit'
+  # Google Login
+  pod 'GoogleSignIn', '~> 6.0.2'
+  # Icons
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   use_react_native!(
