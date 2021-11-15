@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RNSocialLogin</string>
+    <string name="facebook_app_id">5082706425076943</string>
 </resources>
