@@ -12,6 +12,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {Button} from 'react-native-paper';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
+import PushNotification from 'react-native-push-notification';
 
 const fbLogin_Click = () => {
   LoginManager.logInWithPermissions(['public_profile']).then(
@@ -77,9 +78,37 @@ const appleLogin_Click = async () => {
   }
 };
 
+const setBadges_Click = () => {
+  PushNotification.getApplicationIconBadgeNumber(count => {
+    PushNotification.setApplicationIconBadgeNumber(count + 1);
+  });
+};
+
 const App = () => {
   useEffect(() => {
     GoogleSignin.configure();
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
+      onAction: function (notification) {
+        console.log('ACTION:', notification.action);
+        console.log('NOTIFICATION:', notification);
+      },
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
   }, []);
 
   return (
@@ -108,6 +137,13 @@ const App = () => {
           Apple Login
         </Button>
       )}
+      <Button
+        icon="plus"
+        mode="outlined"
+        onPress={setBadges_Click}
+        style={styles.button}>
+        Set Badges
+      </Button>
     </SafeAreaView>
   );
 };
